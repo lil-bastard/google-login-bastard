@@ -1,0 +1,11 @@
+{
+  "name": "google-login-bastard",
+  "version": "1.0.0",
+  "description": "Google SSO for the lil' bastard framework",
+  "main": "src/google-login-bastard.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Paul Navasard",
+  "license": "MIT"
+}
