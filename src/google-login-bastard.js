@@ -10,6 +10,7 @@ function GoogleLoginBastard(options) {
     options.redirectUrl
   );
   this.userTableName = options.userTable || 'app_users';
+  this.appUrl = options.appUrl || '/';
 }
 
 GoogleLoginBastard.prototype.url = function(req, res) {
@@ -33,8 +34,8 @@ GoogleLoginBastard.prototype.login = function(bastard, req, res) {
       plus.people.get({ userId: 'me', auth: this.client }, function(err, response) {
         var user = this._getUser(bastard, response).then(function(user) {
           req.session.user = user;
-          res.redirect('/app');
-        });
+          res.redirect(this.appUrl);
+        }.bind(this));
       }.bind(this));
     }
   }.bind(this));
@@ -46,10 +47,10 @@ GoogleLoginBastard.prototype._getUser = function(bastard, response) {
     gender: response.gender,
     email: response.emails[0].value,
     displayName: response.displayName,
-    name: response.name,
+    firstName: response.name.givenName,
+    lastName: response.name.familyName,
     avatar: response.image.url
   };
-
 
   return bastard.find(this.userTableName, user, {email: user.email}).then(function(results) {
     if(results.length) {
